@@ -1,0 +1,20 @@
+services:
+  table-flow-postgres:
+    image: postgres:17.2
+    env_file:
+      - ../env/postgres.env
+    ports:
+      - "5432:5432"
+  table-flow-be:
+    build:
+      context: ../table-flow-be
+      dockerfile: ./Dockerfile
+    env_file:
+      - ../table-flow-be/.env
+    ports:
+      - '3001:3001'
+    volumes:
+      - ../table-flow-be:/app
+      - /app/node_modules
+    depends_on:
+      - table-flow-postgres
